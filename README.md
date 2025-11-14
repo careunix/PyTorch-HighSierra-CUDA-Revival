@@ -132,12 +132,53 @@ Schemas for CI validation: `schemas/`
 
 # 🚀 Installation
 
-### 1️⃣ Install the wheel
+### 1️⃣ Download & Install (Release Asset)
+
+Direct wheel download:
+
+`https://github.com/careunix/PyTorch-HighSierra-CUDA-Revival/releases/download/v0.1.0/torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl`
+
+Option A — install directly from URL:
 ```bash
-pip install torch-1.7.0a0-cp38-cp38-macosx_10_13_cuda102.whl
+pip install "https://github.com/careunix/PyTorch-HighSierra-CUDA-Revival/releases/download/v0.1.0/torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl"
 ```
 
-### 2️⃣ Verify CUDA functionality
+Option B — download then install:
+```bash
+curl -L -o torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl \
+  https://github.com/careunix/PyTorch-HighSierra-CUDA-Revival/releases/download/v0.1.0/torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl
+pip install ./torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl
+```
+
+### 2️⃣ Integrity & Signature Verification
+
+SHA256 should be:
+```text
+38da4acfe780a041b1f73f67c66efcdb37e9773615446f6a02ed2586f3cff9c7
+```
+
+Check locally:
+```bash
+shasum -a 256 torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl | awk '{print $1}'
+```
+
+Verify GPG signature (public key is in repo):
+```bash
+# Import public key (from repo)
+gpg --import archive/keys/careunix.pub.asc
+
+# Or fetch raw key without cloning
+curl -L -o careunix.pub.asc \
+  https://raw.githubusercontent.com/careunix/PyTorch-HighSierra-CUDA-Revival/main/archive/keys/careunix.pub.asc
+gpg --import careunix.pub.asc
+
+# Verify detached signature (from repo)
+curl -L -o SIGNATURE.asc \
+  https://raw.githubusercontent.com/careunix/PyTorch-HighSierra-CUDA-Revival/main/wheel/SIGNATURE.asc
+gpg --verify SIGNATURE.asc torch-1.7.0a0-cp38-cp38-macosx_10_13_x86_64.whl
+```
+
+### 3️⃣ Verify CUDA functionality
 ```python
 import torch
 print("CUDA:", torch.cuda.is_available())
